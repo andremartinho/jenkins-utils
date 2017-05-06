@@ -1,0 +1,6 @@
+//Credit goes to blog here https://jenkins.io/blog/2016/07/18/pipline-notifications/
+
+This is a simple call to the slack hook previously created using the script variable to idenfity the current build and
+ use the env variables from the script to send related information
+
+ @depends on slack-plugin
