@@ -5,7 +5,7 @@
  * @param script with all the env data needed to send information
  * @param buildStatus the current build status that we are sending
  */
-def call(script, String buildStatus = 'STARTED') {
+def call(script, buildStatus = 'STARTED') {
     // build status of null means successful
     buildStatus = buildStatus ?: 'SUCCESS'
 
