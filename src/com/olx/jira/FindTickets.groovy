@@ -10,7 +10,7 @@ class FindTickets implements Serializable{
 
     def checkTickets(branch,ticketNomenclature,transitionToMake,gitUrl){
 
-        def tickets = steps.sh(script: "git log ${branch}..HEAD" + //Gets all the commits from a branch to HEAD
+        def tickets = steps.sh(script: "git log origin/${branch}..HEAD" + //Gets all the commits from a branch to HEAD
                 " | grep ${ticketNomenclature}" + // Gets all the references to a specific nomenclature (ex: GVRECFAND)
                 " | xargs -n 1" + // Removes all the whitespaces
                 " | tr '\n' ','" + // Substitutes the break lines for ","
