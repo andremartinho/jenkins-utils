@@ -1,4 +1,4 @@
-package com.olx.sdk
+package com.olx.dependencies
 
 class SdkManager implements Serializable{
 
@@ -13,10 +13,10 @@ class SdkManager implements Serializable{
      *
      */
     def callSdkManager() {
-        //Calls the sdk manager to update all the libraries of android
+        //Calls the dependencies manager to update all the libraries of android
         steps.sh '(while sleep 3; do echo "y"; done) | sdkmanager --update --include_obsolete'
 
-        //Calls the sdk manager to accept all the licenses that are missing
+        //Calls the dependencies manager to accept all the licenses that are missing
         steps.sh '(while sleep 3; do echo "y"; done) | sdkmanager --licenses --include_obsolete'
     }
 }
