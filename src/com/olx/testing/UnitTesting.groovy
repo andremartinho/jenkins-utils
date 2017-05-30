@@ -14,9 +14,14 @@ class UnitTesting implements Serializable{
      */
     def runUnitTests(){
         //Runs all the unit tests for the debug flavours
-        steps.sh "./gradlew runAllUnitTests ${steps.env.CI_ENVIRONMENT_FILE}"
-
-        steps.saveTestResultsFromPath("app/build/test-results/**/*.xml")
+        try {
+            steps.sh "./gradlew runAllUnitTests ${steps.env.CI_ENVIRONMENT_FILE}"
+            steps.saveTestResultsFromPath("app/build/test-results/**/*.xml")
+        }catch (Exception exception){
+            //If the tests fail save the results but rethrow the exception so the build fails
+            steps.saveTestResultsFromPath("app/build/test-results/**/*.xml")
+            throw exception
+        }
     }
 
 
