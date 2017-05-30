@@ -23,7 +23,7 @@ class FindTickets implements Serializable{
                     "${steps.env.JIRA_AUTH_TOKEN}",
                     "issue in (${tickets})",
                     "${transitionToMake}",
-                    "[This was moved as part of PR #${steps.env.CHANGE_ID}|${gitUrl}${steps.env.CHANGE_ID}")
+                    "[This was moved as part of PR #${steps.env.CHANGE_ID}|${gitUrl}${steps.env.CHANGE_ID}]")
         }else{
             steps.echo "No tickets to process. Moving forward"
         }
