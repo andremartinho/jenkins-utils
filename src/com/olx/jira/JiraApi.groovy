@@ -78,9 +78,13 @@ class JiraApi implements Serializable{
 
                 newConnection.connect()
                 if(newConnection.responseCode != 204){
-                    InputStream newInputStream = newConnection.getInputStream()
-                    pipeline.echo("Error Occurred " + new JsonSlurper().parse(newInputStream))
-                    newInputStream.close()
+                    try {
+                        InputStream newInputStream = newConnection.getInputStream()
+                        pipeline.echo("Error Occurred " + new JsonSlurper().parse(newInputStream))
+                        newInputStream.close()
+                    }catch(Exception e){
+                        pipeline.echo(e.message)
+                    }
                 }else{
                     pipeline.echo("Ticket " + jiraIssue.id  + " transitioned successfully")
                 }
