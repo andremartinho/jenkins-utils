@@ -1,6 +1,6 @@
 package com.olx.build
 
-class Assemble {
+class Assemble implements Serializable{
 
     def steps
 
