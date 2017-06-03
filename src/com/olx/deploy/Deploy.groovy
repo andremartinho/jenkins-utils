@@ -10,17 +10,31 @@ class Deploy implements Serializable{
     }
 
     def setValues(){
-        def distributionNotes = "'Android Realestate (Version ${steps.env.BUILD_NUMBER})\n\nThis is an automated Jenkins QA Build\n\nPlease verify the issues to review on https://naspersclassifieds.atlassian.net/issues/?filter=23903\n\nItems already approved but awaiting production deployment https://naspersclassifieds.atlassian.net/issues/?filter=23902'"
-        def distributionNotesProperty = "-PDISTRIBUTION_NOTES=${distributionNotes}"
-        def completeBuildString = "-PBUILD_NUMBER=${steps.env.BUILD_NUMBER}"
-        valuesToUse = "${steps.env.CI_ENVIRONMENT_FILE} ${completeBuildString} ${distributionNotesProperty}"
+        def distributionGroupsFilePath = ""
+        def distributionGroups = ""
+        def distributionEmails = ""
+
+        if(steps.env.DISTRIBUTION_GROUPS_FILE_PATH.length() > 0){
+            distributionGroupsFilePath = "-PDISTRIBUTION_GROUPS_FILE_PATH='${steps.env.DISTRIBUTION_GROUPS_FILE_PATH}'"
+        }
+
+        if(steps.env.DISTRIBUTION_GROUPS.length() > 0){
+            distributionGroups = "-PDISTRIBUTION_GROUPS='${steps.env.DISTRIBUTION_GROUPS}'"
+        }
+
+        if(steps.env.DISTRIBUTION_EMAILS.length() > 0){
+            distributionEmails = "-DISTRIBUTION_EMAILS='${steps.env.DISTRIBUTION_EMAILS}'"
+        }
+
+        valuesToUse = "${steps.env.CI_ENVIRONMENT_FILE} -PDISTRIBUTION_NOTES='${steps.env.DISTRIBUTION_NOTES}' ${distributionGroupsFilePath} ${distributionGroups} ${distributionEmails}"
     }
 
-    def deployTo(flavour){
-        steps.sh "./gradlew ${flavour}ReleaseDeliverTask ${valuesToUse} -PDISTRIBUTION_GROUPS=ci_cd/weekly/${flavour}/group_aliases.txt"
+    def deployTo(flavour, variant = "Release"){
+        steps.sh "./gradlew ${flavour}${variant}DeliverTask ${valuesToUse}"
     }
 
-    def archiveResults(){
-        steps.archiveFilesFromPath("app/build/outputs/apk/*.apk")
+    def deployAll(){
+        steps.sh ".gradlew deliverAllFlavoursTask ${valuesToUse}"
     }
+
 }
