@@ -23,7 +23,7 @@ class Deploy implements Serializable{
         }
 
         if(steps.env.DISTRIBUTION_EMAILS.length() > 0){
-            distributionEmails = "-DISTRIBUTION_EMAILS='${steps.env.DISTRIBUTION_EMAILS}'"
+            distributionEmails = "-PDISTRIBUTION_EMAILS='${steps.env.DISTRIBUTION_EMAILS}'"
         }
 
         valuesToUse = "${steps.env.CI_ENVIRONMENT_FILE} -PDISTRIBUTION_NOTES='${steps.env.DISTRIBUTION_NOTES}' ${distributionGroupsFilePath} ${distributionGroups} ${distributionEmails}"
