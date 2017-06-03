@@ -34,7 +34,7 @@ class Deploy implements Serializable{
     }
 
     def deployAll(){
-        steps.sh ".gradlew deliverAllFlavoursTask ${valuesToUse}"
+        steps.sh "./gradlew deliverAllFlavoursTask ${valuesToUse}"
     }
 
 }
