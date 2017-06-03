@@ -12,8 +12,8 @@ class Assemble implements Serializable{
         steps.sh "./gradlew ${steps.env.CI_ENVIRONMENT_FILE} -PBUILD_NUMBER=${steps.env.BUILD_NUMBER} assemble${variant}"
     }
 
-    def assembleReleaseBuildWithTask(){
-        steps.sh "./gradlew ${steps.env.CI_ENVIRONMENT_FILE} -PBUILD_NUMBER=${steps.env.BUILD_NUMBER} AssembleAllReleases"
+    def assembleReleaseBuildWithTask(task){
+        steps.sh "./gradlew ${steps.env.CI_ENVIRONMENT_FILE} -PBUILD_NUMBER=${steps.env.BUILD_NUMBER} ${task}"
     }
 
     def archiveResults(){
