@@ -26,6 +26,7 @@ class Deploy implements Serializable {
 
     def deployFlavours(flavoursToIterate, variant = "Release") {
         for (String flavour : flavoursToIterate.tokenize(',')){
+            steps.echo "Deploying flavour ${flavour}${variant}"
             steps.sh "./gradlew ${flavour}${variant}DeliverTask ${valuesToUse}"
         }
     }
@@ -36,11 +37,13 @@ class Deploy implements Serializable {
         }
 
         for (String flavour : flavoursToIterate){
+            steps.echo "Deploying flavour ${flavour}${variant}"
             steps.sh "./gradlew ${flavour}${variant}DeliverTask ${getDistributionGroupsFilePath(flavour)} ${valuesToUse}"
         }
     }
 
     def deployAll() {
+        steps.echo "Deploying all Flavours of the App"
         steps.sh "./gradlew deliverAllFlavoursTask ${valuesToUse}"
     }
 
