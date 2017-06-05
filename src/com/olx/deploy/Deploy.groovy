@@ -26,6 +26,8 @@ class Deploy implements Serializable {
     }
 
     def deployFlavours(flavoursToIterate, variant = "Release") {
+        steps.echo "Flavours to iterate = ${flavoursToIterate}"
+
         def flavoursList = flavoursToIterate.tokenize(',')
         for (String flavour : flavoursList){
             steps.echo "Deploying flavour ${flavour}${variant}"
@@ -35,16 +37,18 @@ class Deploy implements Serializable {
 
     def deployUsingWeeklyBuilds(flavoursToIterate, variant = "Release"){
         if(flavoursToIterate == "All"){
-            flavoursToIterate = steps.sh(script:"for file in app/src/*/; " +
-                    "do [[ \$(basename \$file) =~ ^(androidTest|main|test)\$ ]] && continue " +
-                    "echo \$(basename \$file) " +
-                    "done"
-                    ,returnStdout: true)
+            flavoursToIterate = steps.sh(script:"for file in app/src/*/;\ndo\n[[ \$(basename \$file) =~ ^(androidTest|main|test)\$ ]] && continue\necho \$(basename \$file)\ndone" +
+                    " | xargs -n 1" + // Removes all the whitespaces
+                    " | tr '\n' ','" + // Substitutes the break lines for ","
+                    " | sed 's/\\(.*\\),/\\1/'" //Removes the last ","
+                    , returnStdout: true)
+
+            steps.echo "All flavours = ${flavoursToIterate}"
         }
 
         def flavoursList = flavoursToIterate.tokenize(',')
 
-        for (String flavour : flavoursToIterate){
+        for (String flavour : flavoursList){
             steps.echo "Deploying flavour ${flavour}${variant}"
             steps.sh "./gradlew ${flavour}${variant}DeliverTask ${getDistributionGroupsFilePath(flavour)} ${valuesToUse}"
         }
