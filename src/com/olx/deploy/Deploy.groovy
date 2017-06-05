@@ -25,7 +25,7 @@ class Deploy implements Serializable {
     }
 
     def deployFlavours(flavoursToIterate, variant = "Release") {
-        for (String flavour : flavoursToIterate){
+        for (String flavour : flavoursToIterate.tokenize(',')){
             steps.sh "./gradlew ${flavour}${variant}DeliverTask ${valuesToUse}"
         }
     }
