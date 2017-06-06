@@ -14,15 +14,15 @@ class Deploy implements Serializable {
         def distributionEmails = ""
 
         if (steps.env.DISTRIBUTION_GROUPS.length() > 0) {
-            distributionGroups = "-PDISTRIBUTION_GROUPS='${steps.env.DISTRIBUTION_GROUPS}'"
+            distributionGroups = "-PDISTRIBUTION_GROUPS=\"${steps.env.DISTRIBUTION_GROUPS}\""
         }
 
         if (steps.env.DISTRIBUTION_EMAILS.length() > 0) {
-            distributionEmails = "-PDISTRIBUTION_EMAILS='${steps.env.DISTRIBUTION_EMAILS}'"
+            distributionEmails = "-PDISTRIBUTION_EMAILS=\"${steps.env.DISTRIBUTION_EMAILS}\""
         }
 
         valuesToUse = "${steps.env.CI_ENVIRONMENT_FILE} " +
-                "-PDISTRIBUTION_NOTES='${steps.env.DISTRIBUTION_NOTES}' ${distributionGroups} ${distributionEmails}"
+                "-PDISTRIBUTION_NOTES=\"${steps.env.DISTRIBUTION_NOTES}\" ${distributionGroups} ${distributionEmails}"
     }
 
     def deployFlavours(flavoursToIterate, variant = "Release") {
