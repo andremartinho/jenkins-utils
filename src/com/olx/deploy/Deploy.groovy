@@ -62,7 +62,7 @@ class Deploy implements Serializable {
     def getDistributionGroupsFilePath(variant){
         def distributionGroupsFilePath = ""
 
-        if (steps.env.USE_WEEKLY_DISTRIBUTION_FILE_PATH) {
+        if (steps.params.USE_WEEKLY_DISTRIBUTION_FILE_PATH) {
             distributionGroupsFilePath = "-PDISTRIBUTION_GROUPS_FILE_PATH=ci_cd/weekly/${variant}/group_aliases.txt"
         }
 
