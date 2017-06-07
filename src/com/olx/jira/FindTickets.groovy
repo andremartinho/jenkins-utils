@@ -26,7 +26,7 @@ class FindTickets implements Serializable {
 
     def checkTicketsInQA(ticketNomenclature, transitionToMake) {
         //Transition issues that are on Ready for QA in the Project
-        steps.jiraTransitionIssues(this,
+        steps.jiraTransitionIssues(steps,
                 "https://naspersclassifieds.atlassian.net/rest/api/2/",
                 "${steps.env.JIRA_AUTH_TOKEN}",
                 "project = ${ticketNomenclature} AND status = 'Ready for QA'",
