@@ -8,7 +8,7 @@ class Preparation implements Serializable{
         this.steps = steps
     }
 
-    def prepareBuild(){
+    def prepareBuild(boolean shouldRefreshDependencies = true){
 
         checkoutScm()
 
@@ -16,7 +16,15 @@ class Preparation implements Serializable{
 
         prepareEnvVariables()
 
-        cleanAndRefreshDependencies()
+        if(shouldRefreshDependencies){
+            cleanAndRefreshDependencies()
+        }else{
+            clean()
+        }
+    }
+
+    def clean() {
+        steps.sh "./gradlew clean ${steps.env.CI_ENVIRONMENT_FILE}"
     }
 
     def checkoutScm(){
