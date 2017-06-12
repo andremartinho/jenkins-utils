@@ -43,7 +43,7 @@ class Preparation implements Serializable{
 
         // Setting Android Path
         //Adding tools,platform-tools and tools/bin to PATH
-        steps.env.PATH = "${steps.env.ANDROID_HOME}/tools:${steps.env.ANDROID_HOME}/platform-tools:${steps.env.ANDROID_HOME}/tools/bin:${steps.env.PATH}"
+        steps.env.PATH = "${steps.env.ANDROID_HOME}:${steps.env.ANDROID_HOME}/tools:${steps.env.ANDROID_HOME}/platform-tools:${steps.env.ANDROID_HOME}/tools/bin:${steps.env.PATH}"
 
         //Setting path for Keystore
         steps.env.CI_ENVIRONMENT_FILE="-PCI_ENVIRONMENT_FILE=${steps.env.KEYSTORES}keystore_cd.gradle"
