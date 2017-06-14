@@ -17,10 +17,14 @@ class Lint implements Serializable{
         steps.androidLint canRunOnFailed: true, defaultEncoding: '', healthy: '', pattern: path, unHealthy: ''
     }
 
-    def runAndArchive(String path){
+    def runAndArchive(flavours = "All",variant = "Release",String path = "app/build/reports/lint-results.xml"){
         def timedException = null
         try {
-            runAnalysis()
+            if(flavours == "All"){
+                runAnalysis()
+            }else{
+                runFlavours(flavours,variant)
+            }
         }catch (exception){
             timedException = exception
         }finally{
@@ -30,4 +34,12 @@ class Lint implements Serializable{
         }
     }
 
+    def runFlavours(flavours, variant) {
+        def flavoursList = flavours.tokenize(',')
+
+        for (String flavour : flavoursList){
+            steps.echo "Running lint task for ${flavour}${variant}"
+            steps.sh "./gradlew lint${flavour}${variant} ${steps.env.CI_ENVIRONMENT_FILE}"
+        }
+    }
 }

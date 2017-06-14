@@ -8,15 +8,11 @@ class Assemble implements Serializable{
         this.steps = steps
     }
 
-    def assembleBuildsWithVariant(variant = "Release"){
-        steps.sh "./gradlew ${steps.env.CI_ENVIRONMENT_FILE} -PBUILD_NUMBER=${steps.env.BUILD_NUMBER} assemble${variant}"
-    }
-
     def assembleReleaseBuildWithTask(task){
         steps.sh "./gradlew ${steps.env.CI_ENVIRONMENT_FILE} -PBUILD_NUMBER=${steps.env.BUILD_NUMBER} ${task}"
     }
 
-    def assembleBuildsWithNames(flavours, variant = "Release"){
+    def assembleBuildsWithNames(flavours, variant){
         def flavoursList = flavours.tokenize(',')
 
         for (String flavour : flavoursList){
@@ -25,7 +21,18 @@ class Assemble implements Serializable{
         }
     }
 
+    def assembleBuilds(flavours, variant = "Release"){
+        if(flavours == "All"){
+            assembleReleaseBuildWithTask("AssembleAllReleases")
+        }else{
+            assembleBuildsWithNames(flavours,variant)
+        }
+    }
+
     def archiveResults(){
         steps.archiveFilesFromPath("app/build/outputs/apk/*.apk")
     }
+
+
+
 }

@@ -25,7 +25,19 @@ class Deploy implements Serializable {
                 "-PDISTRIBUTION_NOTES=\"${steps.env.DISTRIBUTION_NOTES}\" ${distributionGroups} ${distributionEmails}"
     }
 
-    def deployFlavours(flavoursToIterate, variant = "Release") {
+    def deploy(weeklyDistribution,flavours,variant = "Release"){
+        if(weeklyDistribution){
+            deployUsingWeeklyBuilds(flavours,variant)
+        }else{
+            if (flavours == "All") {
+                deployAll()
+            }else{
+                deployFlavours(flavours,variant)
+            }
+        }
+    }
+
+    def deployFlavours(flavoursToIterate, variant) {
         steps.echo "Flavours to iterate = ${flavoursToIterate}"
 
         def flavoursList = flavoursToIterate.tokenize(',')
@@ -35,7 +47,7 @@ class Deploy implements Serializable {
         }
     }
 
-    def deployUsingWeeklyBuilds(flavoursToIterate, variant = "Release"){
+    def deployUsingWeeklyBuilds(flavoursToIterate, variant){
         if(flavoursToIterate == "All"){
             flavoursToIterate = steps.sh(script:"for file in app/src/*/;\ndo\n[[ \$(basename \$file) =~ ^(androidTest|main|test)\$ ]] && continue\necho \$(basename \$file)\ndone" +
                     " | xargs -n 1" + // Removes all the whitespaces
